@@ -108,11 +108,13 @@ function format(data, ownCount){
 	//let text = `<div class="status"><span class="titlebar">As of <time>${time}</time></span><br>1 ${baseTick} = ${quotePrice} ${quoteTick}<br>${ownWorth} ${baseTick} = ${ownCount} ${quoteTick}</div>`
 	let text = `<div class="status"><span class="titlebar">As of <time>${time}</time></span>
 <br>
+<a href="http://bscscan.com/address/${quoteAddress}">BSCScan</a>
+&nbsp;
+<a href="https://exchange.pancakeswap.finance/#/swap?inputCurrency=${quoteAddress}&outputCurrency=BNB">Pancake</a>
+&nbsp;
 <a href="https://poocoin.app/tokens/${quoteAddress}">Poocoin</a>
 &nbsp;
 <a href="https://charts.bogged.finance/?token=${quoteAddress}">Bogged</a>
-&nbsp;
-<a href="https://exchange.pancakeswap.finance/#/swap?inputCurrency=${quoteAddress}&outputCurrency=BNB">Pancake</a>
 <br>
 <table>
 	<tr>
