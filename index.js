@@ -24,6 +24,7 @@ function get(quote){
 		baseAmount
 		quoteCurrency {
 			symbol
+			address
 		}
 		quoteAmount
 		trades: count
@@ -40,20 +41,22 @@ function get(quote){
 	.then((res) => res.json())
 	.then((result) => {
 		let data = result["data"]["ethereum"]["dexTrades"][0]
+		console.log(data)
 		let now = data["timeInterval"]["minute"] + " UTC"
 
 		let basetick = data["baseCurrency"]["symbol"]
 		let quotetick = data["quoteCurrency"]["symbol"]
 
+		let quoteaddress = data["quoteCurrency"]["address"]
+
 		let quoteprice = data["close_price"]
-		//let baseprice = +(1/data["close_price"])
 
 		return {
 			"time": now,
 			"baseTick": basetick,
-			//"basePrice": baseprice,
 			"quoteTick": quotetick,
-			"quotePrice": quoteprice }
+			"quotePrice": quoteprice,
+			"quoteAddress": quoteaddress }
 	});
 	return ret
 }
@@ -98,28 +101,34 @@ function format(data, ownCount){
 	let baseTick = data["baseTick"]
 	let quoteTick = data["quoteTick"]
 	let quotePrice = rnd(data["quotePrice"])
+	let quoteAddress = data["quoteAddress"]
 
 	let ownWorth = rnd(ownCount/quotePrice)
 
-	//let text = `<div class="status"><span class="titlebar">As of <time>${time}</time></span><br>1 ${baseTick} = ${quotePrice}<br>1 ${quoteTick} = ${basePrice}<br>${ownCount} ${quoteTick} = ${ownWorth} ${baseTick}</div>`
 	//let text = `<div class="status"><span class="titlebar">As of <time>${time}</time></span><br>1 ${baseTick} = ${quotePrice} ${quoteTick}<br>${ownWorth} ${baseTick} = ${ownCount} ${quoteTick}</div>`
 	let text = `<div class="status"><span class="titlebar">As of <time>${time}</time></span>
-	<br><br>
-	<table>
-		<tr>
-			<th>${baseTick}</th>
-			<th>${quoteTick}</th>
-		</tr>
-		<tr>
-			<td>1</td>
-			<td>${quotePrice}</td>
-		</tr>
-		<tr>
-			<td>${ownWorth}</td>
-			<td>${ownCount}</td>
-		</tr>
-	</table>
-	<br>`
+<br>
+<a href="https://poocoin.app/tokens/${quoteAddress}">Poocoin</a>
+&nbsp;
+<a href="https://charts.bogged.finance/?token=${quoteAddress}">Bogged</a>
+&nbsp;
+<a href="https://exchange.pancakeswap.finance/#/swap?inputCurrency=${quoteAddress}&outputCurrency=BNB">Pancake</a>
+<br>
+<table>
+	<tr>
+		<th>${baseTick}</th>
+		<th>${quoteTick}</th>
+	</tr>
+	<tr>
+		<td>1</td>
+		<td>${quotePrice}</td>
+	</tr>
+	<tr>
+		<td>${ownWorth}</td>
+		<td>${ownCount}</td>
+	</tr>
+</table>
+<br>`
 	return text
 }
 
